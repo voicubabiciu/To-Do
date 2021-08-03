@@ -30,15 +30,12 @@ final Provider<IRemoteDataSourceNoParam<List<ToDoDto>>>
 // * Repositories
 
 final Provider<IToDoListRepository> toDoRepositoryProvider =
-    Provider<IToDoListRepository>((StateNotifierProviderRef ref) {
-  final ToDoListRepository repo = ToDoListRepository(
-    remoteDataSource: ref.read(toDoRemoteDataSourceProvider),
-    mapper: ref.read(toDoDtoMapperProvider),
-    todos: toDoStateProvider,
-  );
-  ref.onDispose(repo.dispose);
-  return repo;
-});
+    Provider<IToDoListRepository>(
+        (StateNotifierProviderRef ref) => ToDoListRepository(
+              remoteDataSource: ref.read(toDoRemoteDataSourceProvider),
+              mapper: ref.read(toDoDtoMapperProvider),
+              todos: toDoStateProvider,
+            ));
 
 // * Usecases
 

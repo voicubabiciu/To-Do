@@ -20,12 +20,8 @@ class ToDoListRepository implements IToDoListRepository {
   final IRemoteDataSourceNoParam<List<ToDoDto>> remoteDataSource;
   final ToDoDtoMapper mapper;
   final StateNotifierProvider<ToDoStateNotifier, Resource<List<ToDo>>> todos;
-  final BehaviorSubject bhv = BehaviorSubject<List<ToDo>>();
   @override
   Future<void> loadToDos() async {
-    final StreamSubscription<dynamic> res = bhv.listen((_) {});
-    bhv.add([]);
-    bhv.close();
     container.read(todos.notifier).value = Resource<List<ToDo>>.success(
         mapper.mapToDomainModelList(await remoteDataSource.request()));
   }
