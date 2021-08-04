@@ -4,4 +4,10 @@ import 'package:to_do/features/to_do_list/domain/entities/to_do.dart';
 
 class ToDoStateNotifier extends MutableStateNotifier<Resource<List<ToDo>>> {
   ToDoStateNotifier() : super(const Resource<List<ToDo>>.none());
+  final List<ToDo> toDoList = <ToDo>[];
+
+  void cacheToDo(List<ToDo> newToDoList) {
+    toDoList.clear();
+    toDoList.addAll(newToDoList);
+  }
 }

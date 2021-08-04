@@ -8,7 +8,8 @@ import 'package:to_do/features/to_do_list/domain/repositories/to_do_list_reposit
 class GetTodosUseCase
     implements
         INoParamUseCase<
-            StateNotifierProvider<ToDoStateNotifier, Resource<List<ToDo>>>> {
+            AutoDisposeStateNotifierProvider<ToDoStateNotifier,
+                Resource<List<ToDo>>>> {
   GetTodosUseCase({required this.repository}) {
     repository.loadToDos();
   }
@@ -16,7 +17,8 @@ class GetTodosUseCase
   final IToDoListRepository repository;
 
   @override
-  StateNotifierProvider<ToDoStateNotifier, Resource<List<ToDo>>> dispatch() {
+  AutoDisposeStateNotifierProvider<ToDoStateNotifier, Resource<List<ToDo>>>
+      dispatch() {
     return repository.toDos;
   }
 }

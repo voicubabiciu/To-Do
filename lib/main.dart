@@ -6,24 +6,27 @@ import 'package:to_do/features/to_do_list/presentation/pages/to_dos_screen.dart'
 final ProviderContainer container = ProviderContainer();
 void main() {
   runApp(
-    UncontrolledProviderScope(
-      container: container,
+    ProviderScope(
       child: MyApp(),
     ),
   );
 }
 
+final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scaffoldMessengerKey: rootScaffoldMessengerKey,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
-        '/': (BuildContext context) => const ToDosScreen(),
+        '/': (BuildContext context) => ToDosScreen(),
         '/second': (BuildContext context) => const AddToDo(),
       },
     );

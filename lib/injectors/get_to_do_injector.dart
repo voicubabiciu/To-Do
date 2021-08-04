@@ -34,7 +34,7 @@ final Provider<IToDoListRepository> toDoRepositoryProvider =
         (StateNotifierProviderRef ref) => ToDoListRepository(
               remoteDataSource: ref.read(toDoRemoteDataSourceProvider),
               mapper: ref.read(toDoDtoMapperProvider),
-              todos: toDoStateProvider,
+              reader: ref.read,
             ));
 
 // * Usecases
@@ -53,7 +53,7 @@ final Provider<GetTodosUseCase> getToDosUseCaseProvider =
 //     StateNotifierProvider<state.ToDoStateNotifier, Resource<List<ToDo>>>(
 //         (StateNotifierProviderRef ref) => state.ToDoStateNotifier(
 //             getToDosUseCase: ref.read(getToDosUseCaseProvider)));
-final StateNotifierProvider<ToDoStateNotifier, Resource<List<ToDo>>>
-    toDoStateProvider =
-    StateNotifierProvider<ToDoStateNotifier, Resource<List<ToDo>>>(
-        (_) => ToDoStateNotifier());
+// final StateNotifierProvider<ToDoStateNotifier, Resource<List<ToDo>>>
+//     toDoStateProvider =
+//     StateNotifierProvider<ToDoStateNotifier, Resource<List<ToDo>>>(
+//         (_) => ToDoStateNotifier());
