@@ -5,12 +5,10 @@ import 'package:to_do/features/to_do_list/data/mappers/to_do_dto_mapper.dart';
 import 'package:to_do/features/to_do_list/data/models/to_do_dto.dart';
 import 'package:to_do/features/to_do_list/data/remote/to_do_data_source.dart';
 import 'package:to_do/features/to_do_list/data/repositories/to_do_list_repository.dart';
-import 'package:to_do/features/to_do_list/data/repositories/todo_state_notifier.dart';
+import 'package:to_do/features/to_do_list/presentation/state/todo_state_notifier.dart';
 import 'package:to_do/features/to_do_list/domain/entities/to_do.dart';
 import 'package:to_do/features/to_do_list/domain/repositories/to_do_list_repository.dart';
 import 'package:to_do/features/to_do_list/domain/use_cases/load_todos_usecase.dart';
-import 'package:to_do/features/to_do_list/presentation/state/to_do_state.dart'
-    as state;
 import 'package:to_do/injectors/networking_injectors.dart';
 
 // * Mappers
@@ -30,7 +28,9 @@ final Provider<IRemoteDataSourceNoParam<List<ToDoDto>>>
 final AutoDisposeStateNotifierProvider<ToDoStateNotifier, Resource<List<ToDo>>>
     toDosStateNotifier =
     StateNotifierProvider.autoDispose<ToDoStateNotifier, Resource<List<ToDo>>>(
-        (_) => ToDoStateNotifier());
+        (ref) => ToDoStateNotifier(
+              loadToDoUseCase: ref.read(loadToDosUseCaseProvider),
+            ));
 
 // * Repositories
 
@@ -39,7 +39,6 @@ final Provider<IToDoListRepository> toDoRepositoryProvider =
         (StateNotifierProviderRef ref) => ToDoListRepository(
               remoteDataSource: ref.read(toDoRemoteDataSourceProvider),
               mapper: ref.read(toDoDtoMapperProvider),
-              stateNotifier: ref.read(toDosStateNotifier.notifier),
             ));
 
 // * Usecases

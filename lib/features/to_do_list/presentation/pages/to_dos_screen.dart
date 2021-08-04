@@ -20,7 +20,7 @@ class ToDosScreen extends ConsumerWidget {
         title: const Text('Simple To Do list'),
       ),
       body: RefreshIndicator(
-        onRefresh: ref.read(loadToDosUseCaseProvider).dispatch,
+        onRefresh: ref.read(toDosStateNotifier.notifier).loadtoDo,
         child: Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
             final Resource<List<ToDo>> state = ref.watch(toDosStateNotifier);
