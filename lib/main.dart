@@ -28,6 +28,11 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/': (BuildContext context) => ToDosScreen(),
         '/second': (BuildContext context) => const AddToDo(),
+        '/third': (BuildContext context) => const Scaffold(
+              body: Center(
+                child: Text('Third'),
+              ),
+            ),
       },
     );
   }

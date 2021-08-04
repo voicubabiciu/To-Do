@@ -15,17 +15,12 @@ class AddToDo extends StatelessWidget {
         child: Column(
           children: [
             TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Title'
-              ),
+              decoration: InputDecoration(labelText: 'Title'),
             ),
             TextFormField(
               maxLines: 20,
-              decoration: InputDecoration(
-                  labelText: 'Details'
-              ),
+              decoration: InputDecoration(labelText: 'Details'),
             ),
-
           ],
         ),
       ),
@@ -33,6 +28,7 @@ class AddToDo extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
+          Navigator.pushNamed(context, '/third');
         },
       ),
     );

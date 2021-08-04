@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:to_do/core/data_sources/remote_data_source.dart';
+import 'package:to_do/core/resources/resource.dart';
 import 'package:to_do/features/to_do_list/data/mappers/to_do_dto_mapper.dart';
 import 'package:to_do/features/to_do_list/data/models/to_do_dto.dart';
 import 'package:to_do/features/to_do_list/domain/entities/to_do.dart';
@@ -14,15 +15,23 @@ class ToDoListRepository implements IToDoListRepository {
 
   final IRemoteDataSourceNoParam<List<ToDoDto>> remoteDataSource;
   final ToDoDtoMapper mapper;
-
   @override
-  Future<List<ToDo>> loadToDos() async {
+  StreamController<Resource<List<ToDo>>> data =
+      StreamController<Resource<List<ToDo>>>();
+  @override
+  Future<void> loadToDos() async {
     try {
-      return mapper.mapToDomainModelList(await remoteDataSource.request());
-    } on DioError {
-      rethrow;
+      data.add(const Resource<List<ToDo>>.progress());
+      data.add(Resource<List<ToDo>>.success(
+          mapper.mapToDomainModelList(await remoteDataSource.request())));
+    } on DioError catch (e) {
+      data.add(Resource<List<ToDo>>.fail(e));
     }
   }
 
-  void dispose() {}
+  @override
+  void dispose() {
+    print('Good Bye');
+    data.close();
+  }
 }

@@ -1,8 +1,12 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:async';
 import 'package:to_do/core/resources/resource.dart';
-import 'package:to_do/features/to_do_list/presentation/state/todo_state_notifier.dart';
 import 'package:to_do/features/to_do_list/domain/entities/to_do.dart';
 
 abstract class IToDoListRepository {
-  Future<List<ToDo>> loadToDos();
+  StreamController<Resource<List<ToDo>>> get data =>
+      StreamController<Resource<List<ToDo>>>();
+
+  void loadToDos();
+
+  void dispose() {}
 }

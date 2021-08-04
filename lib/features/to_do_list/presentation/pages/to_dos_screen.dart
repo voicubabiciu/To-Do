@@ -13,7 +13,6 @@ class ToDosScreen extends ConsumerWidget {
       GlobalKey<ScaffoldMessengerState>();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // ref.read(toDoRepositoryProvider);
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -87,8 +86,7 @@ class ToDosScreen extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          ref.read(loadToDosUseCaseProvider).dispatch();
-          // Navigator.pushNamed(context, '/second');
+          Navigator.pushNamed(context, '/second');
         },
         child: const Icon(Icons.add),
       ),
