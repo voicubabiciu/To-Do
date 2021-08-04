@@ -5,6 +5,4 @@ import 'package:to_do/features/to_do_list/domain/entities/to_do.dart';
 
 abstract class IToDoListRepository {
   Future<void> loadToDos();
-  AutoDisposeStateNotifierProvider<ToDoStateNotifier, Resource<List<ToDo>>>
-      get toDos;
 }

@@ -14,33 +14,28 @@ class ToDoListRepository implements IToDoListRepository {
   ToDoListRepository(
       {required this.remoteDataSource,
       required this.mapper,
-      required this.reader});
+      required this.stateNotifier}) {
+    loadToDos();
+  }
 
   final IRemoteDataSourceNoParam<List<ToDoDto>> remoteDataSource;
   final ToDoDtoMapper mapper;
-  final AutoDisposeStateNotifierProvider<ToDoStateNotifier,
-          Resource<List<ToDo>>> todos =
-      StateNotifierProvider.autoDispose<ToDoStateNotifier,
-          Resource<List<ToDo>>>((_) => ToDoStateNotifier());
-  final Reader reader;
+  final ToDoStateNotifier stateNotifier;
 
   @override
   Future<void> loadToDos() async {
-    final ToDoStateNotifier state = reader(todos.notifier);
     try {
-      state.value = Resource<List<ToDo>>.progress(data: state.toDoList);
+      stateNotifier.value =
+          Resource<List<ToDo>>.progress(data: stateNotifier.toDoList);
       final List<ToDo> list =
           mapper.mapToDomainModelList(await remoteDataSource.request());
-      state.value = Resource<List<ToDo>>.success(list);
-      state.cacheToDo(list);
+      stateNotifier.value = Resource<List<ToDo>>.success(list);
+      stateNotifier.cacheToDo(list);
     } on DioError catch (e) {
-      state.value = Resource<List<ToDo>>.fail(e, data: state.toDoList);
+      stateNotifier.value =
+          Resource<List<ToDo>>.fail(e, data: stateNotifier.toDoList);
     }
   }
-
-  @override
-  AutoDisposeStateNotifierProvider<ToDoStateNotifier, Resource<List<ToDo>>>
-      get toDos => todos;
 
   void dispose() {}
 }

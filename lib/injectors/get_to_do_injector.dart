@@ -8,7 +8,6 @@ import 'package:to_do/features/to_do_list/data/repositories/to_do_list_repositor
 import 'package:to_do/features/to_do_list/data/repositories/todo_state_notifier.dart';
 import 'package:to_do/features/to_do_list/domain/entities/to_do.dart';
 import 'package:to_do/features/to_do_list/domain/repositories/to_do_list_repository.dart';
-import 'package:to_do/features/to_do_list/domain/use_cases/get_todos_usecase.dart';
 import 'package:to_do/features/to_do_list/domain/use_cases/load_todos_usecase.dart';
 import 'package:to_do/features/to_do_list/presentation/state/to_do_state.dart'
     as state;
@@ -27,6 +26,12 @@ final Provider<IRemoteDataSourceNoParam<List<ToDoDto>>>
               dio: ref.read(dioProvider),
             ));
 
+// * State notifiers
+final AutoDisposeStateNotifierProvider<ToDoStateNotifier, Resource<List<ToDo>>>
+    toDosStateNotifier =
+    StateNotifierProvider.autoDispose<ToDoStateNotifier, Resource<List<ToDo>>>(
+        (_) => ToDoStateNotifier());
+
 // * Repositories
 
 final Provider<IToDoListRepository> toDoRepositoryProvider =
@@ -34,7 +39,7 @@ final Provider<IToDoListRepository> toDoRepositoryProvider =
         (StateNotifierProviderRef ref) => ToDoListRepository(
               remoteDataSource: ref.read(toDoRemoteDataSourceProvider),
               mapper: ref.read(toDoDtoMapperProvider),
-              reader: ref.read,
+              stateNotifier: ref.read(toDosStateNotifier.notifier),
             ));
 
 // * Usecases
@@ -43,11 +48,9 @@ final Provider<LoadToDoUseCase> loadToDosUseCaseProvider =
     Provider<LoadToDoUseCase>((StateNotifierProviderRef ref) =>
         LoadToDoUseCase(repository: ref.read(toDoRepositoryProvider)));
 
-final Provider<GetTodosUseCase> getToDosUseCaseProvider =
-    Provider<GetTodosUseCase>((StateNotifierProviderRef ref) =>
-        GetTodosUseCase(repository: ref.read(toDoRepositoryProvider)));
 
-// * State notifiers
+
+
 // final StateNotifierProvider<state.ToDoStateNotifier, Resource<List<ToDo>>>
 //     toDoNotifierProvider =
 //     StateNotifierProvider<state.ToDoStateNotifier, Resource<List<ToDo>>>(

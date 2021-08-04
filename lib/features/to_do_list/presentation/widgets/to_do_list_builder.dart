@@ -12,16 +12,13 @@ class ToDoListBuilder extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return RefreshIndicator(
-      onRefresh: ref.read(loadToDosUseCaseProvider).dispatch,
-      child: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemBuilder: (BuildContext context, int index) => CardItem(
-          title: toDoList[index].title,
-          dateTime: toDoList[index].date,
-        ),
-        itemCount: toDoList.length,
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemBuilder: (BuildContext context, int index) => CardItem(
+        title: toDoList[index].title,
+        dateTime: toDoList[index].date,
       ),
+      itemCount: toDoList.length,
     );
   }
 }
