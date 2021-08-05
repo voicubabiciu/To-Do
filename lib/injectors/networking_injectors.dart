@@ -3,4 +3,4 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // * Dio
 final Provider<Dio> dioProvider = Provider<Dio>((_) => Dio(BaseOptions(
-    baseUrl: 'http://192.168.101.14:8000/api', connectTimeout: 1000)));
+    baseUrl: 'http://192.168.101.15:8000/api', connectTimeout: 1000)));

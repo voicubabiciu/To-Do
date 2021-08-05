@@ -25,16 +25,16 @@ final Provider<IRemoteDataSourceNoParam<List<ToDoDto>>>
 
 // * Repositories
 
-final AutoDisposeStateProvider<IToDoListRepository> toDoRepositoryProvider =
-    StateProvider.autoDispose<IToDoListRepository>(
-        (StateNotifierProviderRef ref) {
+final AutoDisposeProvider<IToDoListRepository> toDoRepositoryProvider =
+    AutoDisposeProvider<IToDoListRepository>((StateNotifierProviderRef ref) {
   final ToDoListRepository repo = ToDoListRepository(
     remoteDataSource: ref.read(toDoRemoteDataSourceProvider),
     mapper: ref.read(toDoDtoMapperProvider),
   );
-  // ref.onDispose(() {
-  //   repo.dispose();
-  // });
+  ref.onDispose(() {
+    ref.read(toDosStateNotifier.notifier).dispose();
+    repo.dispose();
+  });
   return repo;
 });
 
@@ -44,7 +44,7 @@ final AutoDisposeStateNotifierProvider<ToDoStateNotifier, Resource<List<ToDo>>>
     StateNotifierProvider.autoDispose<ToDoStateNotifier, Resource<List<ToDo>>>(
         (AutoDisposeStateNotifierProviderRef ref) {
   final ToDoStateNotifier state = ToDoStateNotifier(
-    repository: ref.read(toDoRepositoryProvider.notifier).state,
+    repository: ref.read(toDoRepositoryProvider),
   );
   return state;
 });

@@ -20,6 +20,10 @@ class ToDoListRepository implements IToDoListRepository {
       StreamController<Resource<List<ToDo>>>();
   @override
   Future<void> loadToDos() async {
+    if (data.isClosed) {
+      print('Stream is closed');
+      return;
+    }
     try {
       data.add(const Resource<List<ToDo>>.progress());
       data.add(Resource<List<ToDo>>.success(
@@ -31,7 +35,11 @@ class ToDoListRepository implements IToDoListRepository {
 
   @override
   void dispose() {
-    print('Good Bye');
+    if (data.isClosed) {
+      print('Stream is closed');
+      return;
+    }
+    print('Good Bye Repo');
     data.close();
   }
 }

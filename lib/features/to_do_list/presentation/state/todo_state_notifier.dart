@@ -8,6 +8,10 @@ import 'package:to_do/features/to_do_list/domain/repositories/to_do_list_reposit
 class ToDoStateNotifier extends StateNotifier<Resource<List<ToDo>>> {
   ToDoStateNotifier({required this.repository})
       : super(const Resource<List<ToDo>>.none()) {
+    if (repository.data.isClosed) {
+      print('STATE: Stream is closed');
+      return;
+    }
     sub = repository.data.stream.listen((Resource<List<ToDo>> data) {
       state = data;
     });
@@ -18,6 +22,8 @@ class ToDoStateNotifier extends StateNotifier<Resource<List<ToDo>>> {
   late final StreamSubscription<Resource<List<ToDo>>> sub;
   @override
   void dispose() {
+    print('Good Bye State Notifier');
+
     // repository.dispose();
     sub.cancel();
     super.dispose();
