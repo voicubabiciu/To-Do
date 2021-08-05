@@ -9,13 +9,12 @@ import 'package:to_do/injectors/get_to_do_injector.dart';
 import 'package:to_do/main.dart';
 
 class ToDosScreen extends ConsumerWidget {
-  final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
-      GlobalKey<ScaffoldMessengerState>();
+  const ToDosScreen();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // ref.read(toDoRepositoryProvider);
     return Scaffold(
-      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('Simple To Do list'),
       ),

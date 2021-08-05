@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:to_do/core/routes/route_generator.dart';
 import 'package:to_do/features/add_to_do/presentation/pages/add_to_do_screen.dart';
 import 'package:to_do/features/to_do_list/presentation/pages/to_dos_screen.dart';
 
@@ -25,10 +26,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       initialRoute: '/',
-      routes: <String, WidgetBuilder>{
-        '/': (BuildContext context) => ToDosScreen(),
-        '/second': (BuildContext context) => const AddToDo(),
-      },
+      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }
