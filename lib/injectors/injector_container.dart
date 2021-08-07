@@ -1,4 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/data/moor_database.dart';
+
 // * Core providers
-final Provider<int> countProvider = Provider<int>((ProviderRef<int> ref) => 0);
+final Provider<AppDatabase> db = Provider<AppDatabase>((_) {
+  return constructDb();
+});

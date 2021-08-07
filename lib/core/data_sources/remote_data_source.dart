@@ -1,7 +1,4 @@
-import 'package:dio/dio.dart';
-
 abstract class IRemoteDataSource<P, R> {
-
   Future<R> request(P payload);
 }
 

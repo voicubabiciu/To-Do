@@ -5,7 +5,7 @@ import 'package:to_do/features/to_do_list/presentation/pages/to_dos_screen.dart'
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    // final Object? args = settings.arguments;
+    final Object? args = settings.arguments;
 
     switch (settings.name) {
       case '/':

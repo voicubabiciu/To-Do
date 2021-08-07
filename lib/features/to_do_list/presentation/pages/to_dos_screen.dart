@@ -13,7 +13,6 @@ class ToDosScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // ref.read(toDoRepositoryProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Simple To Do list'),
@@ -23,6 +22,7 @@ class ToDosScreen extends ConsumerWidget {
         child: Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
             final Resource<List<ToDo>> state = ref.watch(toDosStateNotifier);
+            print(state);
             ref.listen(toDosStateNotifier, (Resource<List<ToDo>> value) {
               final dynamic data = value.data;
               if (data is DioError) {
@@ -47,7 +47,7 @@ class ToDosScreen extends ConsumerWidget {
                       ],
                     );
                   }
-                  return const Center(child: CircularProgressIndicator());
+                  return child!;
                 },
                 fail: (_, List<ToDo>? data) {
                   if (data != null) {
@@ -86,8 +86,7 @@ class ToDosScreen extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          ref.read(loadToDosUseCaseProvider).dispatch();
-          // Navigator.pushNamed(context, '/second');
+          Navigator.pushNamed(context, '/addToDo');
         },
         child: const Icon(Icons.add),
       ),
