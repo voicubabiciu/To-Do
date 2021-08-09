@@ -18,6 +18,7 @@ class ToDoStateNotifier extends StateNotifier<Resource<List<ToDo>>> {
       loadedToDos = entryMapper.mapToDomainModelList(entries);
       state = Resource<List<ToDo>>.success(loadedToDos);
     });
+    loadtoDo();
   }
 
   final LoadToDoUseCase loadToDoUseCase;

@@ -12,7 +12,7 @@ class ToDoRemoteDataSource implements IRemoteDataSourceNoParam<List<ToDoDto>> {
   @override
   Future<List<ToDoDto>> request() async {
     try {
-      await Future<void>.delayed(const Duration(seconds: 2));
+      // await Future<void>.delayed(const Duration(seconds: 2));
       final Response<dynamic> response = await dio.get<dynamic>('/todos');
 
       if (response.statusCode != 200) {

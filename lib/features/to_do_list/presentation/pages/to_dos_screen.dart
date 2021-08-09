@@ -43,7 +43,10 @@ class ToDosScreen extends ConsumerWidget {
                         Positioned.fill(
                           child: ToDoListBuilder(toDoList: data),
                         ),
-                        child!,
+                        Align(
+                          alignment: Alignment.center,
+                          child: child!,
+                        )
                       ],
                     );
                   }
@@ -56,27 +59,15 @@ class ToDosScreen extends ConsumerWidget {
                   return const Center(child: Text('No To Dos'));
                 });
           },
-          child: Align(
-            alignment: Alignment.center,
-            child: Center(
-              child: FractionallySizedBox(
-                widthFactor: 0.2,
-                heightFactor: 0.15,
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const <Widget>[
-                          CircularProgressIndicator(),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text('Loading...')
-                        ],
-                      ),
-                    ),
+          child: const FractionallySizedBox(
+            widthFactor: 0.3,
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: Card(
+                child: Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Center(
+                    child: CircularProgressIndicator(),
                   ),
                 ),
               ),
