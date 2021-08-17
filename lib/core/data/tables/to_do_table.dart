@@ -1,11 +1,11 @@
 import 'package:moor/moor.dart';
 
-@DataClassName('ToDoEntry')
-class ToDoEntries extends Table {
-  TextColumn get id => text()();
+@DataClassName('TodoEntry')
+class TodoEntries extends Table {
+  TextColumn get id => text().nullable()();
   TextColumn get title => text()();
-  TextColumn get details => text()();
+  BoolColumn get isChecked => boolean()();
   DateTimeColumn get stamp => dateTime()();
   @override
-  Set<Column>? get primaryKey => {id};
+  Set<Column>? get primaryKey => <Column>{id};
 }

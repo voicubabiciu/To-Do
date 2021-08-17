@@ -7,26 +7,26 @@ part of 'moor_database.dart';
 // **************************************************************************
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
-class ToDoEntry extends DataClass implements Insertable<ToDoEntry> {
-  final String id;
+class TodoEntry extends DataClass implements Insertable<TodoEntry> {
+  final String? id;
   final String title;
-  final String details;
+  final bool isChecked;
   final DateTime stamp;
-  ToDoEntry(
-      {required this.id,
+  TodoEntry(
+      {this.id,
       required this.title,
-      required this.details,
+      required this.isChecked,
       required this.stamp});
-  factory ToDoEntry.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory TodoEntry.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    return ToDoEntry(
+    return TodoEntry(
       id: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}id']),
       title: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}title'])!,
-      details: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}details'])!,
+      isChecked: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}is_checked'])!,
       stamp: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}stamp'])!,
     );
@@ -34,29 +34,31 @@ class ToDoEntry extends DataClass implements Insertable<ToDoEntry> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<String>(id);
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<String?>(id);
+    }
     map['title'] = Variable<String>(title);
-    map['details'] = Variable<String>(details);
+    map['is_checked'] = Variable<bool>(isChecked);
     map['stamp'] = Variable<DateTime>(stamp);
     return map;
   }
 
-  ToDoEntriesCompanion toCompanion(bool nullToAbsent) {
-    return ToDoEntriesCompanion(
-      id: Value(id),
+  TodoEntriesCompanion toCompanion(bool nullToAbsent) {
+    return TodoEntriesCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       title: Value(title),
-      details: Value(details),
+      isChecked: Value(isChecked),
       stamp: Value(stamp),
     );
   }
 
-  factory ToDoEntry.fromJson(Map<String, dynamic> json,
+  factory TodoEntry.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return ToDoEntry(
-      id: serializer.fromJson<String>(json['id']),
+    return TodoEntry(
+      id: serializer.fromJson<String?>(json['id']),
       title: serializer.fromJson<String>(json['title']),
-      details: serializer.fromJson<String>(json['details']),
+      isChecked: serializer.fromJson<bool>(json['isChecked']),
       stamp: serializer.fromJson<DateTime>(json['stamp']),
     );
   }
@@ -64,27 +66,27 @@ class ToDoEntry extends DataClass implements Insertable<ToDoEntry> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<String>(id),
+      'id': serializer.toJson<String?>(id),
       'title': serializer.toJson<String>(title),
-      'details': serializer.toJson<String>(details),
+      'isChecked': serializer.toJson<bool>(isChecked),
       'stamp': serializer.toJson<DateTime>(stamp),
     };
   }
 
-  ToDoEntry copyWith(
-          {String? id, String? title, String? details, DateTime? stamp}) =>
-      ToDoEntry(
+  TodoEntry copyWith(
+          {String? id, String? title, bool? isChecked, DateTime? stamp}) =>
+      TodoEntry(
         id: id ?? this.id,
         title: title ?? this.title,
-        details: details ?? this.details,
+        isChecked: isChecked ?? this.isChecked,
         stamp: stamp ?? this.stamp,
       );
   @override
   String toString() {
-    return (StringBuffer('ToDoEntry(')
+    return (StringBuffer('TodoEntry(')
           ..write('id: $id, ')
           ..write('title: $title, ')
-          ..write('details: $details, ')
+          ..write('isChecked: $isChecked, ')
           ..write('stamp: $stamp')
           ..write(')'))
         .toString();
@@ -92,60 +94,59 @@ class ToDoEntry extends DataClass implements Insertable<ToDoEntry> {
 
   @override
   int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(title.hashCode, $mrjc(details.hashCode, stamp.hashCode))));
+      $mrjc(title.hashCode, $mrjc(isChecked.hashCode, stamp.hashCode))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is ToDoEntry &&
+      (other is TodoEntry &&
           other.id == this.id &&
           other.title == this.title &&
-          other.details == this.details &&
+          other.isChecked == this.isChecked &&
           other.stamp == this.stamp);
 }
 
-class ToDoEntriesCompanion extends UpdateCompanion<ToDoEntry> {
-  final Value<String> id;
+class TodoEntriesCompanion extends UpdateCompanion<TodoEntry> {
+  final Value<String?> id;
   final Value<String> title;
-  final Value<String> details;
+  final Value<bool> isChecked;
   final Value<DateTime> stamp;
-  const ToDoEntriesCompanion({
+  const TodoEntriesCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
-    this.details = const Value.absent(),
+    this.isChecked = const Value.absent(),
     this.stamp = const Value.absent(),
   });
-  ToDoEntriesCompanion.insert({
-    required String id,
+  TodoEntriesCompanion.insert({
+    this.id = const Value.absent(),
     required String title,
-    required String details,
+    required bool isChecked,
     required DateTime stamp,
-  })  : id = Value(id),
-        title = Value(title),
-        details = Value(details),
+  })  : title = Value(title),
+        isChecked = Value(isChecked),
         stamp = Value(stamp);
-  static Insertable<ToDoEntry> custom({
-    Expression<String>? id,
+  static Insertable<TodoEntry> custom({
+    Expression<String?>? id,
     Expression<String>? title,
-    Expression<String>? details,
+    Expression<bool>? isChecked,
     Expression<DateTime>? stamp,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (title != null) 'title': title,
-      if (details != null) 'details': details,
+      if (isChecked != null) 'is_checked': isChecked,
       if (stamp != null) 'stamp': stamp,
     });
   }
 
-  ToDoEntriesCompanion copyWith(
-      {Value<String>? id,
+  TodoEntriesCompanion copyWith(
+      {Value<String?>? id,
       Value<String>? title,
-      Value<String>? details,
+      Value<bool>? isChecked,
       Value<DateTime>? stamp}) {
-    return ToDoEntriesCompanion(
+    return TodoEntriesCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
-      details: details ?? this.details,
+      isChecked: isChecked ?? this.isChecked,
       stamp: stamp ?? this.stamp,
     );
   }
@@ -154,13 +155,13 @@ class ToDoEntriesCompanion extends UpdateCompanion<ToDoEntry> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (id.present) {
-      map['id'] = Variable<String>(id.value);
+      map['id'] = Variable<String?>(id.value);
     }
     if (title.present) {
       map['title'] = Variable<String>(title.value);
     }
-    if (details.present) {
-      map['details'] = Variable<String>(details.value);
+    if (isChecked.present) {
+      map['is_checked'] = Variable<bool>(isChecked.value);
     }
     if (stamp.present) {
       map['stamp'] = Variable<DateTime>(stamp.value);
@@ -170,52 +171,52 @@ class ToDoEntriesCompanion extends UpdateCompanion<ToDoEntry> {
 
   @override
   String toString() {
-    return (StringBuffer('ToDoEntriesCompanion(')
+    return (StringBuffer('TodoEntriesCompanion(')
           ..write('id: $id, ')
           ..write('title: $title, ')
-          ..write('details: $details, ')
+          ..write('isChecked: $isChecked, ')
           ..write('stamp: $stamp')
           ..write(')'))
         .toString();
   }
 }
 
-class $ToDoEntriesTable extends ToDoEntries
-    with TableInfo<$ToDoEntriesTable, ToDoEntry> {
+class $TodoEntriesTable extends TodoEntries
+    with TableInfo<$TodoEntriesTable, TodoEntry> {
   final GeneratedDatabase _db;
   final String? _alias;
-  $ToDoEntriesTable(this._db, [this._alias]);
+  $TodoEntriesTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
-      'id', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      'id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false);
   final VerificationMeta _titleMeta = const VerificationMeta('title');
   late final GeneratedColumn<String?> title = GeneratedColumn<String?>(
       'title', aliasedName, false,
       typeName: 'TEXT', requiredDuringInsert: true);
-  final VerificationMeta _detailsMeta = const VerificationMeta('details');
-  late final GeneratedColumn<String?> details = GeneratedColumn<String?>(
-      'details', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+  final VerificationMeta _isCheckedMeta = const VerificationMeta('isChecked');
+  late final GeneratedColumn<bool?> isChecked = GeneratedColumn<bool?>(
+      'is_checked', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: true,
+      defaultConstraints: 'CHECK (is_checked IN (0, 1))');
   final VerificationMeta _stampMeta = const VerificationMeta('stamp');
   late final GeneratedColumn<DateTime?> stamp = GeneratedColumn<DateTime?>(
       'stamp', aliasedName, false,
       typeName: 'INTEGER', requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns => [id, title, details, stamp];
+  List<GeneratedColumn> get $columns => [id, title, isChecked, stamp];
   @override
-  String get aliasedName => _alias ?? 'to_do_entries';
+  String get aliasedName => _alias ?? 'todo_entries';
   @override
-  String get actualTableName => 'to_do_entries';
+  String get actualTableName => 'todo_entries';
   @override
-  VerificationContext validateIntegrity(Insertable<ToDoEntry> instance,
+  VerificationContext validateIntegrity(Insertable<TodoEntry> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
     }
     if (data.containsKey('title')) {
       context.handle(
@@ -223,11 +224,11 @@ class $ToDoEntriesTable extends ToDoEntries
     } else if (isInserting) {
       context.missing(_titleMeta);
     }
-    if (data.containsKey('details')) {
-      context.handle(_detailsMeta,
-          details.isAcceptableOrUnknown(data['details']!, _detailsMeta));
+    if (data.containsKey('is_checked')) {
+      context.handle(_isCheckedMeta,
+          isChecked.isAcceptableOrUnknown(data['is_checked']!, _isCheckedMeta));
     } else if (isInserting) {
-      context.missing(_detailsMeta);
+      context.missing(_isCheckedMeta);
     }
     if (data.containsKey('stamp')) {
       context.handle(
@@ -241,22 +242,22 @@ class $ToDoEntriesTable extends ToDoEntries
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  ToDoEntry map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return ToDoEntry.fromData(data, _db,
+  TodoEntry map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return TodoEntry.fromData(data, _db,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
-  $ToDoEntriesTable createAlias(String alias) {
-    return $ToDoEntriesTable(_db, alias);
+  $TodoEntriesTable createAlias(String alias) {
+    return $TodoEntriesTable(_db, alias);
   }
 }
 
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
-  late final $ToDoEntriesTable toDoEntries = $ToDoEntriesTable(this);
+  late final $TodoEntriesTable todoEntries = $TodoEntriesTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [toDoEntries];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [todoEntries];
 }

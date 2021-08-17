@@ -4,16 +4,20 @@ export 'database/shared.dart';
 
 part 'moor_database.g.dart';
 
-@UseMoor(tables: <Type>[ToDoEntries])
+@UseMoor(tables: <Type>[TodoEntries])
 class AppDatabase extends _$AppDatabase {
   AppDatabase(QueryExecutor e) : super(e);
   @override
   int get schemaVersion => 1;
-  Future<List<ToDoEntry>> getToDos() =>
-      select<ToDoEntries, ToDoEntry>(toDoEntries).get();
-  Stream<List<ToDoEntry>> watchToDos() =>
-      select<ToDoEntries, ToDoEntry>(toDoEntries).watch();
-  Future<int> insertToDo(ToDoEntry todo) =>
-      into<ToDoEntries, ToDoEntry>(toDoEntries)
+  Future<List<TodoEntry>> getToDos() =>
+      select<TodoEntries, TodoEntry>(todoEntries).get();
+  Stream<List<TodoEntry>> watchToDos() =>
+      select<TodoEntries, TodoEntry>(todoEntries).watch();
+  Future<int> insertToDo(TodoEntry todo) =>
+      into<TodoEntries, TodoEntry>(todoEntries)
           .insert(todo, mode: InsertMode.insertOrReplace);
+  Future<int> updateTodo(TodoEntry todo) =>
+      (update<TodoEntries, TodoEntry>(todoEntries)
+            ..where((t) => t.id.equals(todo.id)))
+          .write(TodoEntriesCompanion(isChecked: Value(todo.isChecked)));
 }

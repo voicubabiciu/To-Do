@@ -12,7 +12,7 @@ class Resource<T> with _$Resource<T> {
   const factory Resource.progress({final T? data}) = _Progress<T>;
 
   const factory Resource.fail(
-    final DioError exception, {
+    final Exception exception, {
     final T? data,
   }) = _Fail<T>;
 }
@@ -22,14 +22,14 @@ extension ResourceWrapper<T> on Resource<T> {
       none: () => null,
       success: (T data) => data,
       progress: (T? data) => data,
-      fail: (DioError data, T? exception) => data);
+      fail: (Exception data, T? exception) => data);
 
   Resource<R> mapResource<TT, R>(Transform<T, R> transform) => when(
       none: () => Resource<R>.none(),
       success: (T data) => Resource<R>.success(transform(data)),
       progress: (T? data) =>
           Resource<R>.progress(data: data != null ? transform(data) : null),
-      fail: (DioError exception, T? data) => Resource<R>.fail(exception,
+      fail: (Exception exception, T? data) => Resource<R>.fail(exception,
           data: data != null ? transform(data) : null));
 }
 

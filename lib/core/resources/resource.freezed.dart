@@ -32,7 +32,7 @@ class _$ResourceTearOff {
     );
   }
 
-  _Fail<T> fail<T>(DioError exception, {T? data}) {
+  _Fail<T> fail<T>(Exception exception, {T? data}) {
     return _Fail<T>(
       exception,
       data: data,
@@ -50,7 +50,7 @@ mixin _$Resource<T> {
     required TResult Function() none,
     required TResult Function(T data) success,
     required TResult Function(T? data) progress,
-    required TResult Function(DioError exception, T? data) fail,
+    required TResult Function(Exception exception, T? data) fail,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -58,7 +58,7 @@ mixin _$Resource<T> {
     TResult Function()? none,
     TResult Function(T data)? success,
     TResult Function(T? data)? progress,
-    TResult Function(DioError exception, T? data)? fail,
+    TResult Function(Exception exception, T? data)? fail,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -137,7 +137,7 @@ class _$_None<T> implements _None<T> {
     required TResult Function() none,
     required TResult Function(T data) success,
     required TResult Function(T? data) progress,
-    required TResult Function(DioError exception, T? data) fail,
+    required TResult Function(Exception exception, T? data) fail,
   }) {
     return none();
   }
@@ -148,7 +148,7 @@ class _$_None<T> implements _None<T> {
     TResult Function()? none,
     TResult Function(T data)? success,
     TResult Function(T? data)? progress,
-    TResult Function(DioError exception, T? data)? fail,
+    TResult Function(Exception exception, T? data)? fail,
     required TResult orElse(),
   }) {
     if (none != null) {
@@ -254,7 +254,7 @@ class _$_Success<T> implements _Success<T> {
     required TResult Function() none,
     required TResult Function(T data) success,
     required TResult Function(T? data) progress,
-    required TResult Function(DioError exception, T? data) fail,
+    required TResult Function(Exception exception, T? data) fail,
   }) {
     return success(data);
   }
@@ -265,7 +265,7 @@ class _$_Success<T> implements _Success<T> {
     TResult Function()? none,
     TResult Function(T data)? success,
     TResult Function(T? data)? progress,
-    TResult Function(DioError exception, T? data)? fail,
+    TResult Function(Exception exception, T? data)? fail,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -377,7 +377,7 @@ class _$_Progress<T> implements _Progress<T> {
     required TResult Function() none,
     required TResult Function(T data) success,
     required TResult Function(T? data) progress,
-    required TResult Function(DioError exception, T? data) fail,
+    required TResult Function(Exception exception, T? data) fail,
   }) {
     return progress(data);
   }
@@ -388,7 +388,7 @@ class _$_Progress<T> implements _Progress<T> {
     TResult Function()? none,
     TResult Function(T data)? success,
     TResult Function(T? data)? progress,
-    TResult Function(DioError exception, T? data)? fail,
+    TResult Function(Exception exception, T? data)? fail,
     required TResult orElse(),
   }) {
     if (progress != null) {
@@ -437,7 +437,7 @@ abstract class _Progress<T> implements Resource<T> {
 abstract class _$FailCopyWith<T, $Res> {
   factory _$FailCopyWith(_Fail<T> value, $Res Function(_Fail<T>) then) =
       __$FailCopyWithImpl<T, $Res>;
-  $Res call({DioError exception, T? data});
+  $Res call({Exception exception, T? data});
 }
 
 /// @nodoc
@@ -458,7 +458,7 @@ class __$FailCopyWithImpl<T, $Res> extends _$ResourceCopyWithImpl<T, $Res>
       exception == freezed
           ? _value.exception
           : exception // ignore: cast_nullable_to_non_nullable
-              as DioError,
+              as Exception,
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -473,7 +473,7 @@ class _$_Fail<T> implements _Fail<T> {
   const _$_Fail(this.exception, {this.data});
 
   @override
-  final DioError exception;
+  final Exception exception;
   @override
   final T? data;
 
@@ -510,7 +510,7 @@ class _$_Fail<T> implements _Fail<T> {
     required TResult Function() none,
     required TResult Function(T data) success,
     required TResult Function(T? data) progress,
-    required TResult Function(DioError exception, T? data) fail,
+    required TResult Function(Exception exception, T? data) fail,
   }) {
     return fail(exception, data);
   }
@@ -521,7 +521,7 @@ class _$_Fail<T> implements _Fail<T> {
     TResult Function()? none,
     TResult Function(T data)? success,
     TResult Function(T? data)? progress,
-    TResult Function(DioError exception, T? data)? fail,
+    TResult Function(Exception exception, T? data)? fail,
     required TResult orElse(),
   }) {
     if (fail != null) {
@@ -558,9 +558,9 @@ class _$_Fail<T> implements _Fail<T> {
 }
 
 abstract class _Fail<T> implements Resource<T> {
-  const factory _Fail(DioError exception, {T? data}) = _$_Fail<T>;
+  const factory _Fail(Exception exception, {T? data}) = _$_Fail<T>;
 
-  DioError get exception => throw _privateConstructorUsedError;
+  Exception get exception => throw _privateConstructorUsedError;
   T? get data => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$FailCopyWith<T, _Fail<T>> get copyWith =>
